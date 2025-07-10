@@ -16,7 +16,7 @@ class Solution {
     // from left to right in Binary Tree.
    public static class Pair {
     Node node;
-    int hd;
+    int hd;  //Horizontal Distance (HD):
     Pair(Node node, int hd) {
         this.node = node;
         this.hd = hd;
