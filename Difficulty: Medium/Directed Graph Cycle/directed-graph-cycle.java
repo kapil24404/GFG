@@ -1,37 +1,36 @@
 class Solution {
     public boolean isCyclic(int V, int[][] edges) {
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        for (int i = 0; i < V; i++) {
+        // code here
+         ArrayList<ArrayList<Integer>> adj=new ArrayList<>();
+        for(int i=0;i<V;i++){
             adj.add(new ArrayList<>());
         }
-        for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
+        for(int pair[]:edges){
+            int u=pair[0];
+            int v=pair[1];
             adj.get(u).add(v);
         }
-        int[] indegree = new int[V];
-        for (int i = 0; i < V; i++) {
-            for (int v : adj.get(i)) {
-                indegree[v]++;
+        boolean vis[]=new boolean[V];
+        boolean rec[]=new boolean[V];
+        for(int i=0;i<V;i++){
+            if(!vis[i]){
+                if(DFS(adj,i,vis,rec)) return true;
             }
         }
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < V; i++) {
-            if (indegree[i] == 0) {
-                q.offer(i);
+        return false;
+    }
+    public static boolean DFS(ArrayList<ArrayList<Integer>> adj,int u,boolean vis[],boolean rec[]){
+        vis[u]=true;
+        rec[u]=true;
+        for(int v:adj.get(u)){
+            if(!vis[v]){
+               if(DFS(adj,v,vis,rec)) return true;
+            }
+            else if(rec[v]){
+                return true; //cycle found
             }
         }
-        ArrayList<Integer> res = new ArrayList<>();
-        while (!q.isEmpty()) {
-            int node = q.poll();
-            res.add(node);
-            for (int v : adj.get(node)) {
-                indegree[v]--;
-                if (indegree[v] == 0) {
-                    q.offer(v);
-                }
-            }
-        }
-        return res.size() != V;
+        rec[u]=false;
+        return false;
     }
 }
